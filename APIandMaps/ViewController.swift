@@ -39,8 +39,30 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
     
     func getCoordinates() {
         
-        searchQuery = searchValue.text
         
+        searchQuery = searchValue.text
+        print("Yaar",searchQuery)
+        
+        if (((searchQuery!.contains("‘")))) || (((searchQuery!.contains("%")))) || (((searchQuery!.contains("^")))) || (((searchQuery!.contains(">")))) || (((searchQuery!.contains("<")))) || (((searchQuery!.contains("`"))))
+        {
+           
+            
+            DispatchQueue.main.async {
+                
+                let alert = UIAlertController(title: "Invalid Character", message: "Please Enter another a Valid location", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "OK :)", style: .cancel, handler: nil))
+                
+                self.present(alert, animated: true)
+            }
+            
+            
+            
+        }
+        
+ 
+        else {
+            
         let finalSearch = searchQuery!.replacingOccurrences(of: " ", with: "%20")
         
         let url = URL(string: "https://dev.virtualearth.net/REST/v1/Locations/" + finalSearch + "?&key=Armn24dqt-VYsDPYZIv8j9dNtpiUBn6lxweXtQDobJXzhhVG50sAVJGUKRnpL43n")
@@ -54,19 +76,34 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
                         let jsonResult = try JSONSerialization.jsonObject(with: unWrappedData,
                                                                           options: JSONSerialization.ReadingOptions.mutableContainers) as?
                         NSDictionary
-                        
+
                         let resourceSets = jsonResult?["resourceSets"] as? NSArray
                         let resources = resourceSets?[0] as? NSDictionary
                         let resourrceTwo = resources?["resources"] as? NSArray
+                        print("Array Count", resourrceTwo!.count)
+                        
+
+                        if  resourrceTwo!.count == 0 {
+                            
+                            DispatchQueue.main.async {
+                                
+                                let alert = UIAlertController(title: "Location Not Found", message: "Please Enter another location", preferredStyle: .alert)
+                                
+                                alert.addAction(UIAlertAction(title: "OK :)", style: .cancel, handler: nil))
+                                self.present(alert, animated: true)
+                            }
+                            
+                        }
+                        
+                        else {
+                            
                         let resoursceThree = resourrceTwo?[0] as? NSDictionary
                         self.name = resoursceThree?["name"] as? String             // gets name
                         let points = resoursceThree?["point"] as? NSDictionary
                         let getCoordinates = points?["coordinates"] as? NSArray
                         self.coordinateOne = getCoordinates?[0]  as? Double        // Latitude
                         self.coordinateTwo = getCoordinates?[1] as? Double         // Longitude
-                        
-                        print("Latitude",self.coordinateOne)
-                        print("Longitude", self.coordinateTwo)
+                     
                         
                         let latitude: CLLocationDegrees = self.coordinateOne!
                         let longitude: CLLocationDegrees = self.coordinateTwo!
@@ -84,23 +121,33 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
                         
                         self.map.addAnnotation(annotation)
                         
+                        }
                         
-                        
-                    }
-                        
+                }
+            
                     catch {
                         print ("Error in fetcing Data")
+                        
+                        DispatchQueue.main.async {
+                            
+                            let alert = UIAlertController(title: "Location Not Found", message: "Please Enter another location", preferredStyle: .alert)
+                            
+                            alert.addAction(UIAlertAction(title: "OK :)", style: .cancel, handler: nil))
+                            
+                            self.present(alert, animated: true)
+                        }
+                        
+                        
                     }
                 }
             }
-            
-            
+
         }
         
         task.resume()
         
     }
-    
+}
     
 }
 
