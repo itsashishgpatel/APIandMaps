@@ -8,12 +8,20 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
-class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
+class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLLocationManagerDelegate {
     var name: String?
     var coordinateOne:Double?
     var coordinateTwo:Double?
     var searchQuery:String?
+    var flag:Bool = false
+    var prevName:String?
+    var  prevLati: Double?
+    var  prevLongi: Double?
+    var prevLoc:[MKAnnotation]?
+    var locationManager = CLLocationManager()
+     var initFlag = true
     
     override func viewDidLoad() {
        
@@ -21,6 +29,19 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
         super.viewDidLoad()
         
         searchValue.delegate = self
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
+        map.delegate = self
+        map.mapType = .standard
+        map.isZoomEnabled = true
+        map.isScrollEnabled = true
+        
+        if let coor = map.userLocation.location?.coordinate{
+            map.setCenter(coor, animated: true)
+        }
         
 
     }
@@ -28,20 +49,37 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
     @IBOutlet var map: MKMapView!
     
     @IBOutlet var searchValue: UISearchBar!
+    let  annotation = MKPointAnnotation()
     
     
    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        getCoordinates()
+         getCoordinates()
     }
     
     func getCoordinates() {
         
         
+        
+//        let  annotation = MKPointAnnotation()
+        
+//        if flag == true
+//        {
+//            let  prevCoord = CLLocationCoordinate2D(latitude: prevLati!, longitude: prevLongi!)
+//            annotation.title = prevName!
+//            annotation.coordinate = prevCoord
+//
+//            prevLoc?.append(annotation)
+//
+//            map.removeAnnotation(annotation)
+////            map.reloadInputViews()
+////            map.removeAnnotations(prevLoc!)
+//
+//        }
+        
         searchQuery = searchValue.text
-        print("Yaar",searchQuery)
         
         if (((searchQuery!.contains("‘")))) || (((searchQuery!.contains("%")))) || (((searchQuery!.contains("^")))) || (((searchQuery!.contains(">")))) || (((searchQuery!.contains("<")))) || (((searchQuery!.contains("`"))))
         {
@@ -80,7 +118,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
                         let resourceSets = jsonResult?["resourceSets"] as? NSArray
                         let resources = resourceSets?[0] as? NSDictionary
                         let resourrceTwo = resources?["resources"] as? NSArray
-                        print("Array Count", resourrceTwo!.count)
+                      //  print("Array Count", resourrceTwo!.count)
                         
 
                         if  resourrceTwo!.count == 0 {
@@ -115,11 +153,14 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
                         let region = MKCoordinateRegion(center: coordinates, span: span)
                         self.map.setRegion(region, animated: true)
                         
-                        let annotation = MKPointAnnotation()
-                        annotation.title = self.name
-                        annotation.coordinate = coordinates
                         
-                        self.map.addAnnotation(annotation)
+                        self.annotation.title = self.name
+                        self.prevName = self.name
+                        self.prevLati = latitude as? Double
+                        self.prevLongi = longitude as? Double
+                        self.annotation.coordinate = coordinates
+                     //   self.flag = true
+                        self.map.addAnnotation(self.annotation)
                         
                         }
                         
@@ -148,6 +189,71 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate {
         
     }
 }
+    
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+       
+        if initFlag {
+
+            initFlag = false
+        } else {
+        
+            if flag == true
+            {
+                let  prevCoord = CLLocationCoordinate2D(latitude: prevLati!, longitude: prevLongi!)
+                annotation.title = prevName!
+                annotation.coordinate = prevCoord
+                
+                prevLoc?.append(annotation)
+                
+                map.removeAnnotation(annotation)
+               
+                
+            }
+        
+        
+        }
+    }
+    
+    
+    
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+//
+//        map.mapType = MKMapType.standard
+//
+//        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+//        let region = MKCoordinateRegion(center: locValue, span: span)
+//        map.setRegion(region, animated: true)
+//
+//        let annotation = MKPointAnnotation()
+//        annotation.coordinate = locValue
+//        annotation.title = "Ashish Patel"
+//        annotation.subtitle = "current location"
+//        map.addAnnotation(annotation)
+//
+//    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let userLocation: CLLocation = locations[0]
+        let latitude: CLLocationDegrees = userLocation.coordinate.latitude
+        let longitude: CLLocationDegrees = userLocation.coordinate.longitude
+        let latDelta: CLLocationDegrees = 0.05
+        let longDelta: CLLocationDegrees = 0.005
+        let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)
+        
+        let region = MKCoordinateRegion(center: coordinates, span: span)
+        map.setRegion(region, animated: true)
+        
+        let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinates
+                annotation.title = "Ashish Patel"
+                annotation.subtitle = "current location"
+                map.showsUserLocation = true
+              //  map.addAnnotation(annotation)
+        
+    }
     
 }
 
