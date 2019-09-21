@@ -24,8 +24,8 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var initFlag = true
     var locationArray:[MKAnnotation] = []
     var searchLocation:MKAnnotation?
-    
-
+    var currentAnnotation:MKAnnotation?
+    var flagCheck:Bool = false
     override func viewDidLoad() {
        
         
@@ -80,19 +80,38 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
         
         alert.addTextField(configurationHandler: { textField in textField.placeholder = "Input your location name here..."})
-        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: "Pin", style: .default, handler: { action in
             
             if let locationName = alert.textFields?.first?.text {
                 annotation.title = locationName
                 annotation.coordinate = coordinates
-                
-               self.locationArray.append(annotation)
-                
-                print("added via Txt",self.locationArray)
-                
-                
+
+
+//                if self.locationArray.contains(where: { (annotation) -> Bool in
+//                    true
+//                })
+//
+//                {
+//                    let alert = UIAlertController(title: "Location Already Exist", message: "", preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+//                    self.present(alert, animated: true)
+//                }
+//
+//                else {
+//
+//                    self.locationArray.append(annotation)
+//                    let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+//                    self.present(alert, animated: true)
+//
+//                    print("added via Txt",self.locationArray)
+//                }
+
+               // self.locationArray.append(annotation)
+
+
             //    self.save(title: locationName,longi: longit, lati: latit)
-                
+
             }
         }))
         
@@ -233,23 +252,59 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+    
+        
             
-            if let location = self.searchLocation
+            self.currentAnnotation = view.annotation!
+           
+
+//                if self.locationArray.contains(where: { (currentAnnotation) -> Bool in
+//                    true
+//                })
             
-            {
-                self.locationArray.append(location)
+            for var i in self.locationArray {
+                
+                if i.isEqual(self.currentAnnotation!) {
+                    
+                    self.flagCheck = true
+                    
+                }
+                else {
+                    
+                  
+                }
             }
             
+                
+        //    if self.locationArray.contains(self.currentAnnotation!)
             
+            if self.flagCheck == true
+                
+                {
+                    let alert = UIAlertController(title: "Location Already Exist", message: "", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                    self.present(alert, animated: true)
+                    print("Array",self.locationArray)
+                    print("if annot", self.currentAnnotation?.title)
+                    
+                    self.flagCheck = false
+                }
+                    
+                else {
+                    self.locationArray.append(self.currentAnnotation!)
+                    let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                    self.present(alert, animated: true)
+                    print("annot", self.currentAnnotation?.title)
+                    print("added",self.locationArray)
+                }
+        
             
-            let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-            self.present(alert, animated: true)
-            print("added",self.locationArray)
+
         }))
         
-        self.present(alert, animated: true)
-        
+      
+            self.present(alert, animated: true)
         
     }
     
