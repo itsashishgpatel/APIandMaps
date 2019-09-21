@@ -129,8 +129,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     
     func getCoordinates() {
         
-        
-        
+     locationManager.stopUpdatingLocation()
         
         searchQuery = searchValue.text
         
@@ -153,6 +152,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
  
         else {
+            
             
         let finalSearch = searchQuery!.replacingOccurrences(of: " ", with: "%20")
         
@@ -339,6 +339,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                 annotation.coordinate = coordinates
                 annotation.title = "Ashish Patel"
                 annotation.subtitle = "current location"
+        
                 map.showsUserLocation = true
               //  map.addAnnotation(annotation)
         
