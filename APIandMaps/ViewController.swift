@@ -17,12 +17,15 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var searchQuery:String?
     var flag:Bool = false
     var prevName:String?
-    var  prevLati: Double?
-    var  prevLongi: Double?
+    var prevLati: Double?
+    var prevLongi: Double?
     var prevLoc:[MKAnnotation]?
     var locationManager = CLLocationManager()
-     var initFlag = true
+    var initFlag = true
+    var locationArray:[MKAnnotation] = []
+    var searchLocation:MKAnnotation?
     
+
     override func viewDidLoad() {
        
         
@@ -45,7 +48,13 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         view.addGestureRecognizer(tap)
-
+        
+        
+        let uiLongPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressAction(gestureRecognizer:)))
+        
+        uiLongPress.minimumPressDuration = 2.0
+        map.addGestureRecognizer(uiLongPress)
+        
 
     }
     
@@ -54,6 +63,43 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     @IBOutlet var searchValue: UISearchBar!
     let  annotation = MKPointAnnotation()
     
+    
+    
+    @objc func longPressAction(gestureRecognizer: UIGestureRecognizer)
+    {
+        let touchPoint = gestureRecognizer.location(in: self.map)
+        let coordinates = map.convert(touchPoint, toCoordinateFrom: self.map)
+        let annotation = MKPointAnnotation()
+        
+        let longit =  Double(coordinates.longitude)
+        let latit = Double (coordinates.latitude)
+        
+        
+        let alert = UIAlertController(title: "Name of the Pin Location", message: "Please Enter the Name of the location", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        
+        alert.addTextField(configurationHandler: { textField in textField.placeholder = "Input your location name here..."})
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
+            
+            if let locationName = alert.textFields?.first?.text {
+                annotation.title = locationName
+                annotation.coordinate = coordinates
+                
+               self.locationArray.append(annotation)
+                
+                print("added via Txt",self.locationArray)
+                
+                
+            //    self.save(title: locationName,longi: longit, lati: latit)
+                
+            }
+        }))
+        
+        
+        self.present(alert, animated: true)
+        map.addAnnotation(annotation)
+    }
     
    
     
@@ -66,21 +112,6 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
         
         
-//        let  annotation = MKPointAnnotation()
-        
-//        if flag == true
-//        {
-//            let  prevCoord = CLLocationCoordinate2D(latitude: prevLati!, longitude: prevLongi!)
-//            annotation.title = prevName!
-//            annotation.coordinate = prevCoord
-//
-//            prevLoc?.append(annotation)
-//
-//            map.removeAnnotation(annotation)
-////            map.reloadInputViews()
-////            map.removeAnnotations(prevLoc!)
-//
-//        }
         
         searchQuery = searchValue.text
         
@@ -163,6 +194,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                         self.prevLongi = longitude as? Double
                         self.annotation.coordinate = coordinates
                      //   self.flag = true
+                        self.searchLocation = self.annotation
                         self.map.addAnnotation(self.annotation)
                         
                         }
@@ -193,29 +225,47 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     }
 }
     
-    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-       
-
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        print("I Was Here")
+        
+        let alert = UIAlertController(title: "Save Location", message: "Do you want to add this place to your list", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+            
+            if let location = self.searchLocation
+            
+            {
+                self.locationArray.append(location)
+            }
+            
+            
+            
+            let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+            print("added",self.locationArray)
+        }))
+        
+        self.present(alert, animated: true)
+        
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "toPlaces",
+            let destination = segue.destination as? PlaceListViewController
+            {
+            
+            destination.locationArrayCopy =  locationArray
+                print("to Places")
+            
+        }
     }
     
     
-    
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-//
-//        map.mapType = MKMapType.standard
-//
-//        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-//        let region = MKCoordinateRegion(center: locValue, span: span)
-//        map.setRegion(region, animated: true)
-//
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = locValue
-//        annotation.title = "Ashish Patel"
-//        annotation.subtitle = "current location"
-//        map.addAnnotation(annotation)
-//
-//    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         

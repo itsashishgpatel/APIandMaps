@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		491F73352335B82D000606E9 /* PlaceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491F73342335B82D000606E9 /* PlaceListViewController.swift */; };
 		492AB733232AF5C400966A52 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492AB732232AF5C400966A52 /* AppDelegate.swift */; };
 		492AB735232AF5C400966A52 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492AB734232AF5C400966A52 /* ViewController.swift */; };
 		492AB738232AF5C400966A52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 492AB736232AF5C400966A52 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		491F73342335B82D000606E9 /* PlaceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListViewController.swift; sourceTree = "<group>"; };
 		492AB72F232AF5C400966A52 /* APIandMaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APIandMaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		492AB732232AF5C400966A52 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		492AB734232AF5C400966A52 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				492AB732232AF5C400966A52 /* AppDelegate.swift */,
 				492AB734232AF5C400966A52 /* ViewController.swift */,
 				492AB736232AF5C400966A52 /* Main.storyboard */,
+				491F73342335B82D000606E9 /* PlaceListViewController.swift */,
 				492AB73C232AF5CA00966A52 /* Assets.xcassets */,
 				492AB73E232AF5CA00966A52 /* LaunchScreen.storyboard */,
 				492AB741232AF5CA00966A52 /* Info.plist */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				491F73352335B82D000606E9 /* PlaceListViewController.swift in Sources */,
 				492AB735232AF5C400966A52 /* ViewController.swift in Sources */,
 				492AB733232AF5C400966A52 /* AppDelegate.swift in Sources */,
 				492AB73B232AF5C400966A52 /* APIandMaps.xcdatamodeld in Sources */,
