@@ -60,7 +60,23 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     
     @IBOutlet var map: MKMapView!
     
+    @IBAction func mapViewSelector(_ sender: Any) {
+        switch ((sender as AnyObject).selectedSegmentIndex) {
+        case 0:
+            map.mapType = .standard
+        case 1:
+            map.mapType = .satellite
+        case 2:
+            map.mapType = .hybrid
+        default:
+            map.mapType = .standard
+        }
+        
+    }
+    
     @IBOutlet var searchValue: UISearchBar!
+    
+    
     let  annotation = MKPointAnnotation()
     
     

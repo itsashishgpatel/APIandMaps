@@ -29,6 +29,18 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="f2H-sQ-wvW">
                                 <rect key="frame" x="0.0" y="100" width="414" height="796"/>
                             </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sn1-wl-oAa">
+                                <rect key="frame" x="113" y="116" width="188" height="29"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <segments>
+                                    <segment title="Standard"/>
+                                    <segment title="Satellite"/>
+                                    <segment title="Hybrid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="mapViewSelector:" destination="BYZ-38-t0r" eventType="valueChanged" id="YxK-XL-ZtQ"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -36,8 +48,11 @@
                             <constraint firstAttribute="bottom" secondItem="f2H-sQ-wvW" secondAttribute="bottom" id="R09-ny-Icj"/>
                             <constraint firstItem="vuP-Rr-nH6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="V4K-7f-fxC"/>
                             <constraint firstItem="f2H-sQ-wvW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Y2B-UM-syL"/>
+                            <constraint firstItem="sn1-wl-oAa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="113" id="a8M-UJ-w65"/>
+                            <constraint firstItem="sn1-wl-oAa" firstAttribute="top" secondItem="vuP-Rr-nH6" secondAttribute="bottom" constant="16" id="k5A-49-bnw"/>
                             <constraint firstItem="f2H-sQ-wvW" firstAttribute="top" secondItem="vuP-Rr-nH6" secondAttribute="bottom" id="kr2-Sj-qFj"/>
                             <constraint firstItem="vuP-Rr-nH6" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="qeg-AD-zK9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sn1-wl-oAa" secondAttribute="trailing" constant="113" id="uXD-MD-EYJ"/>
                             <constraint firstItem="f2H-sQ-wvW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="zkf-D9-l7C"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -120,6 +135,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="3dm-BW-AAH"/>
         <segue reference="tef-6X-2Z5"/>
     </inferredMetricsTieBreakers>
 </document>
