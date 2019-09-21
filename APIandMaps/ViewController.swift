@@ -43,6 +43,9 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             map.setCenter(coor, animated: true)
         }
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap)
+
 
     }
     
@@ -192,26 +195,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
        
-        if initFlag {
 
-            initFlag = false
-        } else {
-        
-            if flag == true
-            {
-                let  prevCoord = CLLocationCoordinate2D(latitude: prevLati!, longitude: prevLongi!)
-                annotation.title = prevName!
-                annotation.coordinate = prevCoord
-                
-                prevLoc?.append(annotation)
-                
-                map.removeAnnotation(annotation)
-               
-                
-            }
-        
-        
-        }
     }
     
     
