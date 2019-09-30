@@ -60,7 +60,7 @@
                     <navigationItem key="navigationItem" id="qa6-XT-HtE">
                         <barButtonItem key="rightBarButtonItem" title="Places" id="Ns7-Ug-YYo">
                             <connections>
-                                <segue destination="dgr-ya-XuS" kind="show" identifier="toPlaces" id="3dm-BW-AAH"/>
+                                <segue destination="dgr-ya-XuS" kind="show" identifier="toP" id="6Wf-1j-ngG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -71,7 +71,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2882.608695652174" y="102.45535714285714"/>
+            <point key="canvasLocation" x="2806" y="100"/>
         </scene>
         <!--Place List View Controller-->
         <scene sceneID="qa4-4f-NjH">
@@ -135,7 +135,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="3dm-BW-AAH"/>
         <segue reference="tef-6X-2Z5"/>
     </inferredMetricsTieBreakers>
 </document>

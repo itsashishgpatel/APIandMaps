@@ -9,6 +9,9 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
+
+ var locationArray:[MKAnnotation] = []
 
 class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLLocationManagerDelegate {
     var name: String?
@@ -22,10 +25,17 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var prevLoc:[MKAnnotation]?
     var locationManager = CLLocationManager()
     var initFlag = true
-    var locationArray:[MKAnnotation] = []
+    var flagCheck:Bool = false
+    var locations: [NSManagedObject] = []
+    var locFetch: [NSManagedObject] = []
+    var fetchedTitles: [String] = []
+    var ttF :String = ""
+    var lTitle = " "
+    var receivedLong : Double = 0.0
+    var receivedLat : Double = 0.0
     var searchLocation:MKAnnotation?
     var currentAnnotation:MKAnnotation?
-    var flagCheck:Bool = false
+   
     override func viewDidLoad() {
        
         
@@ -91,6 +101,8 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         let latit = Double (coordinates.latitude)
         
         
+       
+        
         let alert = UIAlertController(title: "Name of the Pin Location", message: "Please Enter the Name of the location", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -101,35 +113,16 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             if let locationName = alert.textFields?.first?.text {
                 annotation.title = locationName
                 annotation.coordinate = coordinates
-
-
-//                if self.locationArray.contains(where: { (annotation) -> Bool in
-//                    true
-//                })
-//
-//                {
-//                    let alert = UIAlertController(title: "Location Already Exist", message: "", preferredStyle: .alert)
-//                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-//                    self.present(alert, animated: true)
-//                }
-//
-//                else {
-//
-//                    self.locationArray.append(annotation)
-//                    let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
-//                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-//                    self.present(alert, animated: true)
-//
-//                    print("added via Txt",self.locationArray)
-//                }
-
-               // self.locationArray.append(annotation)
-
-
-            //    self.save(title: locationName,longi: longit, lati: latit)
-
+                
+                self.coordinateOne = latit
+                self.coordinateTwo = longit
+                self.name = annotation.title
+       
             }
         }))
+        
+       
+        
         
         
         self.present(alert, animated: true)
@@ -187,7 +180,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                         let resourceSets = jsonResult?["resourceSets"] as? NSArray
                         let resources = resourceSets?[0] as? NSDictionary
                         let resourrceTwo = resources?["resources"] as? NSArray
-                      //  print("Array Count", resourrceTwo!.count)
+                    
                         
 
                         if  resourrceTwo!.count == 0 {
@@ -262,62 +255,66 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        print("I Was Here")
+
+        self.currentAnnotation = view.annotation!
+        
+        
+        
         
         let alert = UIAlertController(title: "Save Location", message: "Do you want to add this place to your list", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        
+        
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
     
-        
+            //self.currentAnnotation = view.annotation!
             
-            self.currentAnnotation = view.annotation!
-           
-
-//                if self.locationArray.contains(where: { (currentAnnotation) -> Bool in
-//                    true
-//                })
+            self.fetch()
+            let currentCoordTitle = self.currentAnnotation?.title as? String
             
-            for var i in self.locationArray {
+            for var i in self.fetchedTitles {
                 
-                if i.isEqual(self.currentAnnotation!) {
-                    
+                if (i.isEqual(currentCoordTitle)) {
+                   
                     self.flagCheck = true
                     
                 }
                 else {
                     
-                  
+                   
                 }
             }
             
-                
-        //    if self.locationArray.contains(self.currentAnnotation!)
-            
             if self.flagCheck == true
                 
-                {
-                    let alert = UIAlertController(title: "Location Already Exist", message: "", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                    self.present(alert, animated: true)
-                    print("Array",self.locationArray)
-                    print("if annot", self.currentAnnotation?.title)
-                    
-                    self.flagCheck = false
-                }
-                    
-                else {
-                    self.locationArray.append(self.currentAnnotation!)
-                    let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                    self.present(alert, animated: true)
-                    print("annot", self.currentAnnotation?.title)
-                    print("added",self.locationArray)
-                }
-        
-            
+            {
+                let alert = UIAlertController(title: "Location Already Exist", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(alert, animated: true)
+               
+                
+                self.flagCheck = false
+            }
+                
+            else {
+                
+                
+                self.save(title: self.name!,longitude: self.coordinateTwo! , latitude: self.coordinateOne!)
+             
+                let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(alert, animated: true)
 
+                
+            }
+            
         }))
+        
+        
+        
+        
+
         
       
             self.present(alert, animated: true)
@@ -326,13 +323,15 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "toPlaces",
+        if segue.identifier == "toP",
             let destination = segue.destination as? PlaceListViewController
             {
+                
+             //   destination.fetch()
             
             destination.locationArrayCopy =  locationArray
-                print("to Places")
-            
+            destination.locationTitlesCopy = fetchedTitles
+           
         }
     }
     
@@ -359,6 +358,105 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                 map.showsUserLocation = true
               //  map.addAnnotation(annotation)
         
+    }
+    
+    // CoreData Save
+    
+    func save(title: String,longitude: Double, latitude: Double) {
+        
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        // 1
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        // 2
+        let entity =
+            NSEntityDescription.entity(forEntityName: "Location",
+                                       in: managedContext)!
+        
+        let person = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        
+        // 3
+        person.setValue(title, forKeyPath: "title")
+        person.setValue(longitude, forKeyPath: "longitude")
+        person.setValue(latitude, forKeyPath: "latitude")
+        // 4
+        do {
+            try managedContext.save()
+            
+            locations.append(person)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+        
+    }
+
+    
+    func fetch() {
+        
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        //2
+        let fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Location")
+        
+        //3
+        do {
+            locFetch = try managedContext.fetch(fetchRequest)
+           
+            
+            for locValues in locFetch {
+                
+        //        latF = ((locValues.value(forKeyPath: "lati")) as? NSNumber)!
+        //        lonF = ((locValues.value(forKeyPath: "longi")) as? NSNumber)!
+                  ttF = ((locValues.value(forKeyPath: "title")) as? String)!
+                
+//                latTotalF.append(latF)
+//                lonTotalF.append(lonF)
+                fetchedTitles.append(ttF)
+                
+            }
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if (receivedLong != 0.0) && (receivedLat != 0.0){
+            
+            locationManager.stopUpdatingLocation()
+            
+            let latitude: CLLocationDegrees = receivedLat
+            let longitude: CLLocationDegrees = receivedLong
+            let latDelta: CLLocationDegrees = 0.05
+            let longDelta: CLLocationDegrees = 0.05
+            let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)
+            
+            let region = MKCoordinateRegion(center: coordinates, span: span)
+            map.setRegion(region, animated: true)
+            
+            let annotation = MKPointAnnotation()
+            annotation.title = lTitle
+            annotation.coordinate = coordinates
+            
+            map.addAnnotation(annotation)
+            
+        }
     }
     
 }
