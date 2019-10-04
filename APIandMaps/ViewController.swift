@@ -356,7 +356,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
                 map.showsUserLocation = true
               //  map.addAnnotation(annotation)
-        
+        locationManager.stopUpdatingLocation()
     }
     
     // CoreData Save
