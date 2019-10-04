@@ -62,13 +62,26 @@ class PlaceListViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if thisLoc.isEmpty{
+            
+            
+        }
+            
+        else
+        {
+        
         if (editingStyle == .delete) {
             // handle delete (by removing the data from your array and updating the tableview)
          //  tableView.deleteRows(at: [indexPath], with: .fade)
-            delete(location: thisLoc[indexPath.row])
             
             
-      
+          
+            
+                delete(location: thisLoc[indexPath.row])
+          
+            
+            }
             //   self.thisLoc.remove(at: indexPath.row)
         
             
@@ -82,20 +95,32 @@ class PlaceListViewController: UIViewController,UITableViewDelegate,UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
       fetch()
-      // tableView.reloadData()
+
     }
     
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+     
+        
+        if thisLoc.isEmpty {
+            
+        }
+        else {
+        
+            
+            
         if segue.identifier == "toMap",
             let destination = segue.destination as? ViewController,
             let locationIndex = tableView.indexPathForSelectedRow?.row{
             
+            
             destination.receivedLat =  Double(truncating: latTotalF[locationIndex])
             destination.receivedLong = Double(truncating: lonTotalF[locationIndex])
             destination.lTitle =  ttTotal[locationIndex]
+            
+            }
             
         }
     }

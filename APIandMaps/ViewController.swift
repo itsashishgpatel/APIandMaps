@@ -19,10 +19,6 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var coordinateTwo:Double?
     var searchQuery:String?
     var flag:Bool = false
-    var prevName:String?
-    var prevLati: Double?
-    var prevLongi: Double?
-    var prevLoc:[MKAnnotation]?
     var locationManager = CLLocationManager()
     var initFlag = true
     var flagCheck:Bool = false
@@ -35,6 +31,9 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var receivedLat : Double = 0.0
     var searchLocation:MKAnnotation?
     var currentAnnotation:MKAnnotation?
+    var currentAnnoName: String?
+    var currentAnnoLatitude:Double?
+    var currentAnnotLongitude:Double?
    
     override func viewDidLoad() {
        
@@ -113,9 +112,9 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             if let locationName = alert.textFields?.first?.text {
                 annotation.title = locationName
                 annotation.coordinate = coordinates
-                
-                self.coordinateOne = latit
-                self.coordinateTwo = longit
+//
+//                self.coordinateOne = latit
+//                self.coordinateTwo = longit
                 self.name = annotation.title
        
             }
@@ -217,9 +216,6 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                         
                         
                         self.annotation.title = self.name
-                        self.prevName = self.name
-                        self.prevLati = latitude as? Double
-                        self.prevLongi = longitude as? Double
                         self.annotation.coordinate = coordinates
                      //   self.flag = true
                         self.searchLocation = self.annotation
@@ -257,10 +253,11 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
 
         self.currentAnnotation = view.annotation!
+        self.currentAnnoName = self.currentAnnotation?.title as? String
+        self.currentAnnoLatitude = self.currentAnnotation?.coordinate.latitude
+        self.currentAnnotLongitude = self.currentAnnotation?.coordinate.longitude
         
-        
-        
-        
+
         let alert = UIAlertController(title: "Save Location", message: "Do you want to add this place to your list", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
@@ -300,7 +297,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             else {
                 
                 
-                self.save(title: self.name!,longitude: self.coordinateTwo! , latitude: self.coordinateOne!)
+                self.save(title: self.currentAnnoName!,longitude: self.currentAnnotLongitude! , latitude: self.currentAnnoLatitude!)
              
                 let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -439,7 +436,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         if (receivedLong != 0.0) && (receivedLat != 0.0){
             
             locationManager.stopUpdatingLocation()
-            
+          
             let latitude: CLLocationDegrees = receivedLat
             let longitude: CLLocationDegrees = receivedLong
             let latDelta: CLLocationDegrees = 0.05
