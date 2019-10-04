@@ -88,6 +88,10 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     
     let  annotation = MKPointAnnotation()
     
+    @IBAction func currentLocation(_ sender: Any) {
+        
+        self.locationManager.startUpdatingLocation()
+    }
     
     
     @objc func longPressAction(gestureRecognizer: UIGestureRecognizer)
