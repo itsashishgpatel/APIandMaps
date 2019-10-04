@@ -115,6 +115,8 @@ class PlaceListViewController: UIViewController,UITableViewDelegate,UITableViewD
             let destination = segue.destination as? ViewController,
             let locationIndex = tableView.indexPathForSelectedRow?.row{
             
+            destination.navigationItem.rightBarButtonItem = nil
+          //  destination.navigationItem.rightBarButtonItem?.isEnabled = false
             
             destination.receivedLat =  Double(truncating: latTotalF[locationIndex])
             destination.receivedLong = Double(truncating: lonTotalF[locationIndex])

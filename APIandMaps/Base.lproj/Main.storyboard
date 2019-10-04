@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HbS-kp-kJf">
-    <device id="retina6_1" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,11 +15,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="APIandMaps" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" text="" placeholder="Enter Location to Search" showsSearchResultsButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vuP-Rr-nH6">
-                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
@@ -27,10 +27,10 @@
                                 </scopeButtonTitles>
                             </searchBar>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="f2H-sQ-wvW">
-                                <rect key="frame" x="0.0" y="100" width="414" height="796"/>
+                                <rect key="frame" x="0.0" y="76" width="375" height="591"/>
                             </mapView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sn1-wl-oAa">
-                                <rect key="frame" x="113" y="116" width="188" height="29"/>
+                                <rect key="frame" x="78" y="92" width="219" height="29"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <segments>
                                     <segment title="Standard"/>
@@ -44,15 +44,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="sn1-wl-oAa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="78" id="A6D-tt-2iz"/>
+                            <constraint firstItem="sn1-wl-oAa" firstAttribute="top" secondItem="vuP-Rr-nH6" secondAttribute="bottom" constant="16" id="IDb-O2-8Ji"/>
                             <constraint firstItem="vuP-Rr-nH6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="J6E-cZ-4em"/>
                             <constraint firstAttribute="bottom" secondItem="f2H-sQ-wvW" secondAttribute="bottom" id="R09-ny-Icj"/>
                             <constraint firstItem="vuP-Rr-nH6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="V4K-7f-fxC"/>
                             <constraint firstItem="f2H-sQ-wvW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Y2B-UM-syL"/>
-                            <constraint firstItem="sn1-wl-oAa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="113" id="a8M-UJ-w65"/>
-                            <constraint firstItem="sn1-wl-oAa" firstAttribute="top" secondItem="vuP-Rr-nH6" secondAttribute="bottom" constant="16" id="k5A-49-bnw"/>
                             <constraint firstItem="f2H-sQ-wvW" firstAttribute="top" secondItem="vuP-Rr-nH6" secondAttribute="bottom" id="kr2-Sj-qFj"/>
                             <constraint firstItem="vuP-Rr-nH6" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="qeg-AD-zK9"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sn1-wl-oAa" secondAttribute="trailing" constant="113" id="uXD-MD-EYJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sn1-wl-oAa" secondAttribute="trailing" constant="78" id="s1f-L6-ZSb"/>
                             <constraint firstItem="f2H-sQ-wvW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="zkf-D9-l7C"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -71,14 +71,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2806" y="100"/>
+            <point key="canvasLocation" x="2805.7971014492755" y="99.776785714285708"/>
         </scene>
         <!--Place List View Controller-->
         <scene sceneID="qa4-4f-NjH">
             <objects>
                 <viewController id="dgr-ya-XuS" customClass="PlaceListViewController" customModule="APIandMaps" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sUu-Nm-nLL">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HCj-Q4-0zF">
@@ -121,7 +121,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HbS-kp-kJf" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XrF-zR-cWn">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -135,6 +135,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="6Wf-1j-ngG"/>
         <segue reference="tef-6X-2Z5"/>
     </inferredMetricsTieBreakers>
 </document>

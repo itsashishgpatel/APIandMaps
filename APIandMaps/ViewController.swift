@@ -325,7 +325,9 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             {
                 
              //   destination.fetch()
-            
+             
+      
+                
             destination.locationArrayCopy =  locationArray
             destination.locationTitlesCopy = fetchedTitles
            
