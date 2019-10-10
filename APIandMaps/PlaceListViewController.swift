@@ -117,6 +117,7 @@ class PlaceListViewController: UIViewController,UITableViewDelegate,UITableViewD
             
             destination.navigationItem.rightBarButtonItem = nil
           //  destination.navigationItem.rightBarButtonItem?.isEnabled = false
+            destination.searchValue = nil
             
             destination.receivedLat =  Double(truncating: latTotalF[locationIndex])
             destination.receivedLong = Double(truncating: lonTotalF[locationIndex])

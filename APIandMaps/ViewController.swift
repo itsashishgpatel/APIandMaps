@@ -34,7 +34,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var currentAnnoName: String?
     var currentAnnoLatitude:Double?
     var currentAnnotLongitude:Double?
-   
+
     override func viewDidLoad() {
        
         
@@ -260,16 +260,15 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         self.currentAnnoName = self.currentAnnotation?.title as? String
         self.currentAnnoLatitude = self.currentAnnotation?.coordinate.latitude
         self.currentAnnotLongitude = self.currentAnnotation?.coordinate.longitude
-        
+     
 
-        let alert = UIAlertController(title: "Save Location", message: "Do you want to add this place to your list", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Save Location", message: "Do you want to add this place to your list", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+       
         
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
     
-            //self.currentAnnotation = view.annotation!
             
             self.fetch()
             let currentCoordTitle = self.currentAnnotation?.title as? String
@@ -304,6 +303,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                 self.save(title: self.currentAnnoName!,longitude: self.currentAnnotLongitude! , latitude: self.currentAnnoLatitude!)
              
                 let alert = UIAlertController(title: "Location Saved", message: "", preferredStyle: .alert)
+                
                 alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                 self.present(alert, animated: true)
 
@@ -312,6 +312,32 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             
         }))
         
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Share Location", style: .default, handler: { action in
+            
+            let locationNameText = "Location Name is : \" \(self.currentAnnoName!) \" , "
+            let textLat = " Current Latitude is :   \(self.currentAnnoLatitude!), "
+            let textLong =  " Current Longitude is :  \(self.currentAnnotLongitude!)."
+            
+            let finalText =  locationNameText + textLat + textLong
+            let appleURL = "https://maps.apple.com?ll=\(self.currentAnnoLatitude!),\(self.currentAnnotLongitude!)"
+             let googleURL = "https://www.google.com/maps/dir/Current+Location/\(self.currentAnnoLatitude!),\(self.currentAnnotLongitude!)"
+            let finalAppleURL = "Apple Maps: " + appleURL + "\n"
+            let finalGoogleURL = "Google Maps: " + googleURL + " "
+          //  let googleURL =  "comgooglemaps://?saddr=&daddr=\(self.currentAnnoLatitude!),\(self.currentAnnotLongitude!)&directionsmode=driving"
+        
+           
+             let textToShare = [ finalText, finalAppleURL , finalGoogleURL ]
+            
+            let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+            
+            activityViewController.popoverPresentationController?.sourceView = self.view
+     
+            
+            self.present(activityViewController, animated: true, completion: nil)
+            
+        }))
         
         
         
@@ -353,10 +379,10 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         let region = MKCoordinateRegion(center: coordinates, span: span)
         map.setRegion(region, animated: true)
         
-        let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinates
-                annotation.title = "Ashish Patel"
-                annotation.subtitle = "current location"
+//        let annotation = MKPointAnnotation()
+//                annotation.coordinate = coordinates
+//                annotation.title = "Ashish Patel"
+//                annotation.subtitle = "current location"
         
                 map.showsUserLocation = true
               //  map.addAnnotation(annotation)
