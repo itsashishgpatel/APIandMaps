@@ -36,11 +36,12 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
     var currentAnnotLongitude:Double?
 
     override func viewDidLoad() {
-       
+        
+
         
         super.viewDidLoad()
         
-        searchValue.delegate = self
+        searchValue?.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -83,7 +84,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
     }
     
-    @IBOutlet var searchValue: UISearchBar!
+    @IBOutlet var searchValue: UISearchBar?
     
     
     let  annotation = MKPointAnnotation()
@@ -103,9 +104,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         let longit =  Double(coordinates.longitude)
         let latit = Double (coordinates.latitude)
         
-        
-       
-        
+
         let alert = UIAlertController(title: "Name of the Pin Location", message: "Please Enter the Name of the location", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -116,9 +115,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             if let locationName = alert.textFields?.first?.text {
                 annotation.title = locationName
                 annotation.coordinate = coordinates
-//
-//                self.coordinateOne = latit
-//                self.coordinateTwo = longit
+
                 self.name = annotation.title
        
             }
@@ -132,8 +129,6 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         map.addAnnotation(annotation)
     }
     
-   
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
          getCoordinates()
@@ -143,7 +138,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         
      locationManager.stopUpdatingLocation()
         
-        searchQuery = searchValue.text
+        searchQuery = searchValue?.text
         
         if (((searchQuery!.contains("‘")))) || (((searchQuery!.contains("%")))) || (((searchQuery!.contains("^")))) || (((searchQuery!.contains(">")))) || (((searchQuery!.contains("<")))) || (((searchQuery!.contains("`"))))
         {
@@ -221,7 +216,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
                         
                         self.annotation.title = self.name
                         self.annotation.coordinate = coordinates
-                     //   self.flag = true
+                    
                         self.searchLocation = self.annotation
                         self.map.addAnnotation(self.annotation)
                         
@@ -379,17 +374,10 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
         let region = MKCoordinateRegion(center: coordinates, span: span)
         map.setRegion(region, animated: true)
         
-//        let annotation = MKPointAnnotation()
-//                annotation.coordinate = coordinates
-//                annotation.title = "Ashish Patel"
-//                annotation.subtitle = "current location"
-        
                 map.showsUserLocation = true
-              //  map.addAnnotation(annotation)
         locationManager.stopUpdatingLocation()
     }
     
-    // CoreData Save
     
     func save(title: String,longitude: Double, latitude: Double) {
         
@@ -447,12 +435,8 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             
             for locValues in locFetch {
                 
-        //        latF = ((locValues.value(forKeyPath: "lati")) as? NSNumber)!
-        //        lonF = ((locValues.value(forKeyPath: "longi")) as? NSNumber)!
                   ttF = ((locValues.value(forKeyPath: "title")) as? String)!
-                
-//                latTotalF.append(latF)
-//                lonTotalF.append(lonF)
+
                 fetchedTitles.append(ttF)
                 
             }
@@ -461,6 +445,7 @@ class ViewController: UIViewController,MKMapViewDelegate,UISearchBarDelegate,CLL
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
+    
     
     
     override func viewWillAppear(_ animated: Bool) {

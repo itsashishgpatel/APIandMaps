@@ -20,7 +20,7 @@
                         <subviews>
                             <searchBar contentMode="redraw" text="" placeholder="Enter Location to Search" showsSearchResultsButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vuP-Rr-nH6">
                                 <rect key="frame" x="0.0" y="20" width="414" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="search"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
                                     <string>Title</string>
@@ -151,7 +151,6 @@
         <image name="current-icon-21" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6Wf-1j-ngG"/>
         <segue reference="tef-6X-2Z5"/>
     </inferredMetricsTieBreakers>
 </document>

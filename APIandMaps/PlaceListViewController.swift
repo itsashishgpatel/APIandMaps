@@ -116,12 +116,15 @@ class PlaceListViewController: UIViewController,UITableViewDelegate,UITableViewD
             let locationIndex = tableView.indexPathForSelectedRow?.row{
             
             destination.navigationItem.rightBarButtonItem = nil
-          //  destination.navigationItem.rightBarButtonItem?.isEnabled = false
-            destination.searchValue = nil
+            destination.view.addSubview(destination.searchValue!)
+            destination.searchValue?.translatesAutoresizingMaskIntoConstraints = false
+            destination.searchValue?.heightAnchor.constraint(equalToConstant: 0.0).isActive = true
             
             destination.receivedLat =  Double(truncating: latTotalF[locationIndex])
             destination.receivedLong = Double(truncating: lonTotalF[locationIndex])
             destination.lTitle =  ttTotal[locationIndex]
+           
+
             
             }
             
@@ -179,13 +182,7 @@ class PlaceListViewController: UIViewController,UITableViewDelegate,UITableViewD
         
         let managedContext =
             appDelegate.persistentContainer.viewContext
-        
-        //2
-//        let fetchRequest =
-//            NSFetchRequest<NSManagedObject>(entityName: "Location")
-      //  fetchRequest.predicate = NSPredicate (format: "title = %@", location.value(forKey: "title") as! CVarArg)
-        
-        //3
+         
         do {
            managedContext.delete(location)
           
